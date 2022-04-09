@@ -14,7 +14,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LetterBox" parent="." instance=ExtResource( 1 )]
+[node name="LetterBox1" parent="." instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 50.0
