@@ -2,6 +2,7 @@ extends HBoxContainer
 
 var letter_to_update: int = 1
 var guessed_word: String = ""
+var active_row = "Row1"
 
 func initialise():
 	letter_to_update = 1
@@ -10,6 +11,12 @@ func initialise():
 func _input(event : InputEvent):
 	#Don't leave anything outside of event checks in this routine!! 
 	#Or it will trigger for every single mouse and keyboard input.
+	
+	#Returns out of _input() unless Row instance is the currently active row, so
+	#only the currently active Row instance is updated on input.
+	#active_row is set in WordGrid _input().
+	if name != active_row:
+		return
 	
 	#Letter Input
 	if is_input_a_letter(event) == true:
@@ -31,12 +38,11 @@ func _input(event : InputEvent):
 	#BackSpace Input
 	elif is_input_a_letter(event) == false:
 		if get_nonletter_input(event) == "BackSpace" and letter_to_update > 1:
-			
 			#Move letter_to_update to previous LetterBox
 			letter_to_update -= 1
 			
 			#Remove letter from LetterBox UI
-			var node_name: String = "LetterBox" + str(letter_to_update)
+			var node_name: String = get_letterbox_name(letter_to_update)
 			get_node(node_name).get_node("Letter").text = ""
 			
 			#Remove letter from guess string
@@ -44,12 +50,30 @@ func _input(event : InputEvent):
 			
 			print(node_name, "; " , guessed_word , ", " , letter_to_update)
 			
-	#Enter Input
-		if get_nonletter_input(event) == "Enter" and is_row_full():
-			#Compare guessed_word with actual answer
-			#Deal with colours
-			#Move on to next row
-			pass
+	
+
+func compare_letters():
+	
+	for n in DATA.answer.length():
+		var guessed_letter_n : String = guessed_word.substr(n, 1)
+		var answer_letter_n  : String = DATA.answer.substr(n, 1)
+		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
+		
+		
+		
+		#If guessed letter is in the correct place:
+		if guessed_letter_n == answer_letter_n:
+			letterbox_n.set_colour_green()
+		
+		
+		elif (guessed_letter_n != answer_letter_n 
+			and guessed_letter_n in DATA.answer):
+				letterbox_n.set_colour_yellow()
+			
+		else:
+			letterbox_n.set_colour_grey()
+		
+
 
 
 func get_input_letter(event):
@@ -68,6 +92,12 @@ func get_nonletter_input(event):
 	if is_input_a_letter(event) == false:
 		return event.as_text()
 
+func get_letterbox_name(letterbox_num : int):
+	var letterbox_name = "LetterBox" + str(letterbox_num)
+	return letterbox_name
+
+
+
 func is_row_full():
 	#Returns true if row contains a full word, false otherwise.
 	
@@ -85,7 +115,7 @@ func is_input_a_letter(var input : InputEvent):
 	#Func returns null if input is neither letter nor backspace/enter.
 	#
 	#There is almost certainly a nicer way to do this, but this is safe and
-	#bug-free... for now
+	#bug-free
 	
 	if input.is_action_pressed("BackSpace") or input.is_action_pressed("Enter"):
 		return false
