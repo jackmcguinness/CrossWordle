@@ -37,7 +37,7 @@ func _input(event : InputEvent):
 		
 	#BackSpace Input
 	elif is_input_a_letter(event) == false:
-		if get_nonletter_input(event) == "BackSpace" and letter_to_update > 1:			
+		if get_nonletter_input(event) == "BackSpace" and letter_to_update > 1:
 			#Move letter_to_update to previous LetterBox
 			letter_to_update -= 1
 			
@@ -52,11 +52,28 @@ func _input(event : InputEvent):
 			
 	
 
-func assess_guess():
+func compare_letters():
 	
-	######## THIS IS NEXT TODO ##########
-	
-	pass
+	for n in DATA.answer.length():
+		var guessed_letter_n : String = guessed_word.substr(n, 1)
+		var answer_letter_n  : String = DATA.answer.substr(n, 1)
+		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
+		
+		
+		
+		#If guessed letter is in the correct place:
+		if guessed_letter_n == answer_letter_n:
+			letterbox_n.set_colour_green()
+		
+		
+		elif (guessed_letter_n != answer_letter_n 
+			and guessed_letter_n in DATA.answer):
+				letterbox_n.set_colour_yellow()
+			
+		else:
+			letterbox_n.set_colour_grey()
+		
+
 
 
 func get_input_letter(event):
@@ -98,7 +115,7 @@ func is_input_a_letter(var input : InputEvent):
 	#Func returns null if input is neither letter nor backspace/enter.
 	#
 	#There is almost certainly a nicer way to do this, but this is safe and
-	#bug-free... for now
+	#bug-free
 	
 	if input.is_action_pressed("BackSpace") or input.is_action_pressed("Enter"):
 		return false

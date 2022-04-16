@@ -12,7 +12,7 @@ func _input(event: InputEvent):
 	if (event.as_text() == "Enter"
 		and row_node.is_row_full() 
 		and row_node.guessed_word == DATA.answer):
-			row_node.assess_guess()
+			row_node.compare_letters()
 		
 	#Triggers if word is incorrect.
 	elif (event.as_text() == "Enter"
@@ -20,7 +20,7 @@ func _input(event: InputEvent):
 		and row_node.guessed_word != DATA.answer):
 			
 			#Assesses guess and colours accordingly
-			row_node.assess_guess()
+			row_node.compare_letters()
 			
 			if current_row == total_rows:
 				#Finish game
