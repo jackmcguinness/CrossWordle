@@ -23,7 +23,7 @@ func _input(event: InputEvent):
 			row_node.compare_letters()
 			
 			if current_row == total_rows:
-				#Finish game
+				#Finish game - TODO
 				pass
 			
 			elif current_row < total_rows:

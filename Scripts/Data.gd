@@ -1,7 +1,7 @@
 extends Node
 
 var guess_n : int = 0 #gets incremented for each guess
-var answer : String = "BOOSE"
+var answer : String = "ABCDE"
 
 func _ready():
 	#capitalises answer to match capitalised letter inputs.
