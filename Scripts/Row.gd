@@ -50,31 +50,42 @@ func _input(event : InputEvent):
 			
 			print(node_name, "; " , guessed_word , ", " , letter_to_update)
 			
-	
 
 func compare_letters():
 	
+	#First loop checks for greens and sets all other letterboxes grey:
 	for n in DATA.answer.length():
 		var guessed_letter_n : String = guessed_word.substr(n, 1)
 		var answer_letter_n  : String = DATA.answer.substr(n, 1)
 		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
 		
-		
-		
 		#If guessed letter is in the correct place:
 		if guessed_letter_n == answer_letter_n:
 			letterbox_n.set_colour_green()
-		
-		
-		elif (guessed_letter_n != answer_letter_n 
-			and guessed_letter_n in DATA.answer):
-				letterbox_n.set_colour_yellow()
-			
 		else:
 			letterbox_n.set_colour_grey()
 		
-
-
+	#Second loop checks for yellows and overwrites grey with yellow:
+	for n in DATA.answer.length():
+		var guessed_letter_n : String = guessed_word.substr(n, 1)
+		var answer_letter_n  : String = DATA.answer.substr(n, 1)
+		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
+		
+		#If letter appears in word, but is in the wrong place
+		if (guessed_letter_n != answer_letter_n
+			and guessed_letter_n in DATA.answer):
+				#If letter only appears once, check if it is already green
+				#(i.e. is it already in the correct place), and set grey if so.
+				#Otherwise, letter is in the answer but not in the correct 
+				#place - so set to yellow.
+				
+				var ans_letter_pos = DATA.answer.find(guessed_letter_n, 0)
+				var letterbox_name = "LetterBox" + str(ans_letter_pos + 1)
+				
+				if get_node(letterbox_name).is_letterbox_green():
+					letterbox_n.set_colour_grey()
+				else:
+					letterbox_n.set_colour_yellow()
 
 func get_input_letter(event):
 	#This func is here to call in place of using event.get_text() elsewhere.
@@ -173,4 +184,5 @@ func is_input_a_letter(var input : InputEvent):
 		return true
 	else: #Just here for clarity: would stil return null here if removed
 		return null 
+
 
