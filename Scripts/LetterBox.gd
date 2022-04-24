@@ -6,7 +6,6 @@ var green  = Color(0.3, 0.6, 0.18, 1)
 var grey   = Color(0.3, 0.3, 0.3, 1)
 
 
-
 func _ready():
 	
 	#Set ColorRect size equal to LetterBox size
@@ -26,3 +25,9 @@ func set_colour_green():
 
 func set_colour_grey():
 	$Colour.color = grey
+
+func is_letterbox_green():
+	if $Colour.color == green:
+		return true
+	else:
+		return false

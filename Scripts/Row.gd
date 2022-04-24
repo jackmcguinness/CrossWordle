@@ -53,68 +53,39 @@ func _input(event : InputEvent):
 
 func compare_letters():
 	
+	#First loop checks for greens and sets all other letterboxes grey:
 	for n in DATA.answer.length():
 		var guessed_letter_n : String = guessed_word.substr(n, 1)
 		var answer_letter_n  : String = DATA.answer.substr(n, 1)
 		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
 		
-		
-		
 		#If guessed letter is in the correct place:
 		if guessed_letter_n == answer_letter_n:
 			letterbox_n.set_colour_green()
-		
-		#If letter appears in word, but is in the wrong place
-		elif (guessed_letter_n != answer_letter_n
-			and guessed_letter_n in DATA.answer):
-				
-				#Create substring of guessed_word from 0 to n.
-				var guess_substring : String = guessed_word.substr(0, n+1)
-				
-				#Count number of times letter occurs in substring
-				var letter_count = guess_substring.count(guessed_letter_n, 0)
-				
-				#Compare against answer - set yellow or grey accordingly
-				if letter_count <= DATA.answer.count(guessed_letter_n, 0):
-					letterbox_n.set_colour_yellow()
-				else:
-					letterbox_n.set_colour_grey()
-		
-		
-#		BELOW DOESN'T QUITE WORK YET!!! 
-#		If a letter is guessed BEFORE the correct place, it will colour yellow
-#		regardless of if the letter is also guessed correctly and turns green.
-#		e.g: for answer ABCDE, if guessed CCCCC, the first C will turn yellow 
-#		and the third will turn green.
-#		
-#		SOLUTION: WI think we need to check for greens in a seperate loop before
-#		yellows. Then before we colour a box yellow, we can check to see how 
-#		many of this letetr are coloured green, and then change the compare if to
-#		
-#		if letter_count + (no. greens for this letter) <= DATA.answer.count(guessed_letter_n, 0):
-#			turn yellow
-#
-#
-#
-##		#SOLUTION THAT WILL WORK:
-##		1) Create a substring of guessed_word at from 0 to n (e.g. Godot will have substrs 
-##		G, GO, GOD, GODO, GODOT). 
-##		2) Then for each substr, count the number of times 
-##		guessed_letter_n appears.
-##		3) Count the number of times guessed_letter_n appears in answer.
-##		4) if (2) <= (3), colour yellow. Otherwise colour grey. 
-		
-			
 		else:
 			letterbox_n.set_colour_grey()
 		
-
-
-#
-#func populate_letter_dictionary():
-#	for n in DATA.answer.length():
-#		var letter_n : String = guessed_word.substr(n, 1)
-#		update_letter_dict(letter_n)
+	#Second loop checks for yellows and overwrites grey with yellow:
+	for n in DATA.answer.length():
+		var guessed_letter_n : String = guessed_word.substr(n, 1)
+		var answer_letter_n  : String = DATA.answer.substr(n, 1)
+		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
+		
+		#If letter appears in word, but is in the wrong place
+		if (guessed_letter_n != answer_letter_n
+			and guessed_letter_n in DATA.answer):
+				#If letter only appears once, check if it is already green
+				#(i.e. is it already in the correct place), and set grey if so.
+				#Otherwise, letter is in the answer but not in the correct 
+				#place - so set to yellow.
+				
+				var ans_letter_pos = DATA.answer.find(guessed_letter_n, 0)
+				var letterbox_name = "LetterBox" + str(ans_letter_pos + 1)
+				
+				if get_node(letterbox_name).is_letterbox_green():
+					letterbox_n.set_colour_grey()
+				else:
+					letterbox_n.set_colour_yellow()
 
 func get_input_letter(event):
 	#This func is here to call in place of using event.get_text() elsewhere.
@@ -147,46 +118,6 @@ func is_row_full():
 		return false
 	else:
 		print("ERROR: Guessed word has more letters than LetterBoxes!")
-
-
-#func initialise_letter_dictionary():
-#	#This function sets up the letter dictionary, where the value for each key
-#	#is the number of times the letter appears in the guessed word.
-#	#
-#	#The below list is necessary to declare the dictionary keys (A-Z).
-#	#This function can be called to reset the values, but the dict can also be 
-#	#looped through.
-#	#letter_count.size() can be used to get/set size if necessary.
-#
-#	letter_count["A"] = 0
-#	letter_count["B"] = 0
-#	letter_count["C"] = 0
-#	letter_count["D"] = 0
-#	letter_count["E"] = 0
-#	letter_count["F"] = 0
-#	letter_count["G"] = 0
-#	letter_count["H"] = 0
-#	letter_count["I"] = 0
-#	letter_count["J"] = 0
-#	letter_count["K"] = 0
-#	letter_count["L"] = 0
-#	letter_count["M"] = 0
-#	letter_count["N"] = 0
-#	letter_count["O"] = 0
-#	letter_count["P"] = 0
-#	letter_count["Q"] = 0
-#	letter_count["R"] = 0
-#	letter_count["S"] = 0
-#	letter_count["T"] = 0
-#	letter_count["U"] = 0
-#	letter_count["V"] = 0
-#	letter_count["W"] = 0
-#	letter_count["X"] = 0
-#	letter_count["Y"] = 0
-#	letter_count["Z"] = 0
-#
-#func update_letter_dict(var letter_to_update : String):
-#	letter_count[letter_to_update] += 1
 
 func is_input_a_letter(var input : InputEvent):
 	#The letter inputs are hardcoded here for safety.
