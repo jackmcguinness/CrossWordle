@@ -23,7 +23,7 @@ func _input(event : InputEvent):
 		if (letter_to_update <= DATA.get_answer_length()):
 			
 			#Add letter to LetterBox UI
-			var node_name: String = "LetterBox" + str(letter_to_update)
+			var node_name: String = get_letterbox_name(letter_to_update)
 			get_node(node_name).get_node("Letter").text = get_input_letter(event)
 			
 			#Apend letter to guess string
@@ -57,7 +57,7 @@ func compare_letters():
 	for n in DATA.answer.length():
 		var guessed_letter_n : String = guessed_word.substr(n, 1)
 		var answer_letter_n  : String = DATA.answer.substr(n, 1)
-		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
+		var letterbox_n      : Node = get_node(get_letterbox_name(n+1))
 		
 		#If guessed letter is in the correct place:
 		if guessed_letter_n == answer_letter_n:
@@ -69,23 +69,38 @@ func compare_letters():
 	for n in DATA.answer.length():
 		var guessed_letter_n : String = guessed_word.substr(n, 1)
 		var answer_letter_n  : String = DATA.answer.substr(n, 1)
-		var letterbox_n      : Node = get_node("LetterBox" + str(n+1))
+		var letterbox_n      : Node = get_node(get_letterbox_name(n+1))
 		
 		#If letter appears in word, but is in the wrong place
 		if (guessed_letter_n != answer_letter_n
 			and guessed_letter_n in DATA.answer):
 				#If letter only appears once, check if it is already green
 				#(i.e. is it already in the correct place), and set grey if so.
+				#
 				#Otherwise, letter is in the answer but not in the correct 
-				#place - so set to yellow.
+				#place - so if there are less as many letters in the guess so 
+				#far, set yellow. If there are more instances of a letter in 
+				#the guess than in the answer, the remainder are set to grey.
+				#
+				#e.g. for 'BALLS', guess 'LLXXL' would have the first 2 'L's 
+				#yellow, and the third grey, as there are only 2 'L's in answer.
 				
 				var ans_letter_pos = DATA.answer.find(guessed_letter_n, 0)
-				var letterbox_name = "LetterBox" + str(ans_letter_pos + 1)
+				var letterbox_name = get_letterbox_name(ans_letter_pos + 1)
 				
 				if get_node(letterbox_name).is_letterbox_green():
 					letterbox_n.set_colour_grey()
 				else:
-					letterbox_n.set_colour_yellow()
+					
+					var ans_letter_count = DATA.answer.count(guessed_letter_n)
+					
+					var guess_substr = guessed_word.substr(0, n)
+					var guess_letter_count = guess_substr.count(guessed_letter_n)
+					
+					if guess_letter_count < ans_letter_count:
+						letterbox_n.set_colour_yellow()
+					else:
+						letterbox_n.set_colour_grey()
 
 func get_input_letter(event):
 	#This func is here to call in place of using event.get_text() elsewhere.
@@ -104,13 +119,16 @@ func get_nonletter_input(event):
 		return event.as_text()
 
 func get_letterbox_name(letterbox_num : int):
+	#All calls to LetterBox nodes need the node name to be able to call. This
+	#is always set up by calling this function, as if the name of the LetterBox
+	#nodes change in the future, only this one line will need changing.
+	
 	var letterbox_name = "LetterBox" + str(letterbox_num)
 	return letterbox_name
 
-
-
 func is_row_full():
 	#Returns true if row contains a full word, false otherwise.
+	#else should (hopefully) never be triggered.
 	
 	if guessed_word.length() == DATA.get_answer_length():
 		return true
