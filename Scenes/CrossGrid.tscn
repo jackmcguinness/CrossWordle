@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/CrossRow.tscn" type="PackedScene" id=1]
+
+[node name="CrossGrid" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 29.0
+margin_bottom = 48.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CrossRow1" parent="." instance=ExtResource( 1 )]
+margin_right = 1053.0
+margin_bottom = 50.0
+
+[node name="CrossRow2" parent="." instance=ExtResource( 1 )]
+margin_top = 54.0
+margin_right = 1053.0
+margin_bottom = 104.0
+
+[node name="CrossRow3" parent="." instance=ExtResource( 1 )]
+margin_top = 108.0
+margin_right = 1053.0
+margin_bottom = 158.0
+
+[node name="CrossRow4" parent="." instance=ExtResource( 1 )]
+margin_top = 162.0
+margin_right = 1053.0
+margin_bottom = 212.0
+
+[node name="CrossRow5" parent="." instance=ExtResource( 1 )]
+margin_top = 216.0
+margin_right = 1053.0
+margin_bottom = 266.0
+
+[node name="CrossRow6" parent="." instance=ExtResource( 1 )]
+margin_top = 270.0
+margin_right = 1053.0
+margin_bottom = 320.0
+
+[node name="CrossRow7" parent="." instance=ExtResource( 1 )]
+margin_top = 324.0
+margin_right = 1053.0
+margin_bottom = 374.0
