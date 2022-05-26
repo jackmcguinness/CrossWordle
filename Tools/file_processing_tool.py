@@ -45,7 +45,7 @@ def format_word_list_for_JSON(word_length: int):
     json_path = get_filepath_to_word_files() + new_file_name + ".json"
     
     #Format file
-    with open(txt_path, "r") as f:
+    with open(txt_path, "r") as f: 
         lines = f.read().splitlines()
 
     with open(json_path, "x") as f:
@@ -53,9 +53,9 @@ def format_word_list_for_JSON(word_length: int):
         f.write("[" + "\n")
 
         #For each word line:
-        #Add 2 spaces to start of line and append comma to end
+        #Add 2 spaces to start of line, "quotations" around the word, and append comma to end
         for line in lines:
-            f.write("  " + line + "," + "\n")
+            f.write("  " + '"' + line + '"' + "," + "\n")
         
         #For last line: close bracket
         f.write("]")
