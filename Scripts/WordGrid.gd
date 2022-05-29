@@ -1,7 +1,7 @@
 extends VBoxContainer
 
 var current_row: int = 1
-var total_rows: int = DATA.get_answer_length()
+
 
 func _input(event: InputEvent):
 	
@@ -21,6 +21,8 @@ func _input(event: InputEvent):
 			
 			#Assesses guess and colours accordingly
 			row_node.compare_letters()
+			
+			var total_rows: int = DATA.get_answer_length()
 			
 			if current_row == total_rows:
 				#Finish game - TODO
