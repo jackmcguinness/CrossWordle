@@ -2,6 +2,23 @@ extends VBoxContainer
 
 var current_row: int = 1
 
+func _ready():
+	
+	add_rows_to_wordgrid()
+
+func add_rows_to_wordgrid():
+	#WARNING: Grid scene starts with 1 Row so it is visible in the scene  
+	#editor. The n-th LetterBox scene added by this code will be the n+1-th 
+	#Row in the Grid.
+	
+	var num_rows_to_add = DATA.get_answer_length() - 1
+	
+	for n in num_rows_to_add:
+		var Row_scene = load("res://Scenes/Row.tscn")
+		var scene_instance: Node = Row_scene.instance()
+		scene_instance.name = "Row"+str(n+2)
+		add_child(scene_instance)
+
 
 func _input(event: InputEvent):
 	

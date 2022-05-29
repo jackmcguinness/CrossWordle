@@ -4,10 +4,8 @@
 [ext_resource path="res://Scripts/MainScene.gd" type="Script" id=2]
 
 [node name="MainScene" type="Control"]
-anchor_left = -0.000913739
-anchor_top = -0.0015594
-anchor_right = 0.999086
-anchor_bottom = 0.998441
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
