@@ -6,11 +6,11 @@ var answer : String = ""
 func _ready():
 	#Set answer to random word - current manually set to length 5 but this will
 	#change to variable for CrossGrid to call when implemented 
-	answer = generate_answer(5)
-	
+	answer = generate_answer_word(5)
+
 	#Capitalises answer to match capitalised letter inputs
 	answer = answer.to_upper()
-	
+
 	print(answer)
 
 func get_answer_length():
@@ -19,14 +19,14 @@ func get_answer_length():
 	return answer.length()
 
 
-func generate_answer(length: int):
+func generate_answer_word(length: int):
 	#Read array of n letter words from Data file
 	var word_array = read_word_file(length)
 	
 	#Set up random number
 	var rng = RandomNumberGenerator.new() 
 	rng.randomize()
-	var random_i = rng.randf_range(0, word_array.size())
+	var random_i = rng.randi_range(0, word_array.size())
 	
 	#Get random word from array
 	return word_array[random_i]

@@ -9,8 +9,6 @@ func _ready():
 	add_letterboxes_to_row()
 	
 
-	
-
 
 func initialise():
 	letter_to_update = 1
