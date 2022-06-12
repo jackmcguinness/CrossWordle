@@ -19,31 +19,3 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 50.0
 margin_bottom = 50.0
-
-[node name="LetterBox2" parent="." instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 54.0
-margin_right = 104.0
-margin_bottom = 50.0
-
-[node name="LetterBox3" parent="." instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 108.0
-margin_right = 158.0
-margin_bottom = 50.0
-
-[node name="LetterBox4" parent="." instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 162.0
-margin_right = 212.0
-margin_bottom = 50.0
-
-[node name="LetterBox5" parent="." instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 216.0
-margin_right = 266.0
-margin_bottom = 50.0

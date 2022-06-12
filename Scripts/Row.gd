@@ -4,6 +4,12 @@ var letter_to_update: int = 1
 var guessed_word: String = ""
 var active_row = "Row1"
 
+func _ready():
+	
+	add_letterboxes_to_row()
+	
+
+
 func initialise():
 	letter_to_update = 1
 	guessed_word = ""
@@ -101,6 +107,19 @@ func compare_letters():
 						letterbox_n.set_colour_yellow()
 					else:
 						letterbox_n.set_colour_grey()
+
+func add_letterboxes_to_row():
+	#WARNING: Row scene starts with 1 LetterBox so it can be seen when 
+	#constructing other scenes. The n-th LetterBox scene added by this
+	#code will be the n+1-th LetterBox in the Row.
+	
+	var num_boxes_to_add = DATA.get_answer_length() - 1
+	
+	for n in num_boxes_to_add:
+		var LetterBox_scene = load("res://Scenes/LetterBox.tscn")
+		var scene_instance: Node = LetterBox_scene.instance()
+		scene_instance.name = "LetterBox"+str(n+2)
+		add_child(scene_instance)
 
 func get_input_letter(event):
 	#This func is here to call in place of using event.get_text() elsewhere.
